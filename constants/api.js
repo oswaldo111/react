@@ -26,19 +26,26 @@ export const obtenerProductoPorId = async (id) => {
 
 // Ejemplo de una solicitud POST para buscar productos
 export const buscarProductos = async (query) => {
-  try {
-    const response = await api.post('/product/search', {
-      Nombre_Like: query.nombre,
-      Skip: query.skip || 0,
-      Take: query.take || 10,
-      SendRowCount: query.sendRowCount || 2
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Error al buscar productos:', error);
-    throw error;
-  }
-};
+    try {
+      const response = await api.post('/product/search', {
+        Nombre_Like: query.nombre,
+        Skip: query.skip || 0,
+        Take: query.take || 10,
+        SendRowCount: query.sendRowCount || 2
+      });
+      console.log('Respuesta de la API:', response.data); // Verifica aquí el formato
+      // Extrae el array de productos de la propiedad 'data'
+      if (Array.isArray(response.data.data)) {
+        return response.data.data; // Devolver el array de productos
+      } else {
+        throw new Error('La respuesta no contiene un array de productos');
+      }
+    } catch (error) {
+      console.error('Error al buscar productos:', error);
+      throw error;
+    }
+  };
+  
 
 // Ejemplo de una solicitud POST para crear un nuevo producto
 export const crearProducto = async (producto) => {
