@@ -26,7 +26,7 @@ const CrearProductoScreen: React.FC = () => {
     const producto = {
       nombre: nuevoProducto.nombre,
       descripcion: nuevoProducto.descripcion,
-      precio,
+      precio:nuevoProducto.precio,
     };
 
     try {

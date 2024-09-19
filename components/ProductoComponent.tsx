@@ -13,13 +13,18 @@ const ProductoComponent = () => {
 
   const cargarProductos = async () => {
     setLoading(true);
+    setError(null); // Reiniciar el error antes de la solicitud
     try {
       const productosData = await buscarProductos({ nombre: '', skip: 0, take: 10 });
-      console.log('Datos de productos:', productosData); // Verifica aquí el formato
-      setProductos(productosData);
+      console.log('Datos de productos:', productosData);
+      if (!productosData || productosData.length === 0) {
+        setError('No se encontraron productos.');
+      } else {
+        setProductos(productosData);
+      }
     } catch (error) {
       console.error('Error al buscar productos:', error);
-      setError('No se pudo cargar la lista de productos');
+      setError('No se pudo cargar la lista de productos.');
     } finally {
       setLoading(false);
     }

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Configura la URL base de tu API
-const apiUrl = 'https://localhost:7031'; // Cambia esto por tu URL real
+const apiUrl = 'http://productosOUCR.somee.com'; // Cambia esto por tu URL real
 
 const api = axios.create({
   baseURL: apiUrl,
@@ -28,7 +28,7 @@ export const obtenerProductoPorId = async (id) => {
 export const buscarProductos = async (query) => {
     try {
       const response = await api.post('/product/search', {
-        Nombre_Like: query.nombre,
+        Nombre_Like: "",
         Skip: query.skip || 0,
         Take: query.take || 10,
         SendRowCount: query.sendRowCount || 2
@@ -41,7 +41,7 @@ export const buscarProductos = async (query) => {
         throw new Error('La respuesta no contiene un array de productos');
       }
     } catch (error) {
-      console.error('Error al buscar productos:', error);
+      console.error('Error al buscar pddroductos:', error);
       throw error;
     }
   };
@@ -53,40 +53,26 @@ export const crearProducto = async (producto) => {
     const response = await api.post('/product', {
       NombreOUCR: producto.nombre,
       DescripcionoOUCR: producto.descripcion,
-      PrecioOUCR: producto.precio
+      PrecioOUCR: producto.precio,
     });
     return response.data;
   } catch (error) {
-    console.error('Error al crear el producto:', error);
+    if (error.response) {
+      // La solicitud se realizó y el servidor respondió con un código de estado que no está en el rango de 2xx
+      console.error('Error en la respuesta del servidor:', error.response.data);
+      console.error('Código de estado:', error.response.status);
+      console.error('Cabeceras:', error.response.headers);
+    } else if (error.request) {
+      // La solicitud se realizó pero no se recibió respuesta
+      console.error('No se recibió respuesta:', error.request);
+    } else {
+      // Algo sucedió al configurar la solicitud
+      console.error('Error al configurar la solicitud:', error.message);
+    }
+    console.error('Error completo:', error);
     throw error;
   }
 };
 
-// Ejemplo de una solicitud PUT para editar un producto
-export const editarProducto = async (producto) => {
-  try {
-    const response = await api.put('/product', {
-      Id: producto.id,
-      NombreOUCR: producto.nombre,
-      DescripcionOUCR: producto.descripcion,
-      PrecioOUCR: producto.precio
-    });
-    return response.data;
-  } catch (error) {
-    console.error('Error al editar el producto:', error);
-    throw error;
-  }
-};
-
-// Ejemplo de una solicitud DELETE para eliminar un producto
-export const eliminarProducto = async (id) => {
-  try {
-    const response = await api.delete(`/product/${id}`);
-    return response.data;
-  } catch (error) {
-    console.error('Error al eliminar el producto:', error);
-    throw error;
-  }
-};
 
 export default api;
