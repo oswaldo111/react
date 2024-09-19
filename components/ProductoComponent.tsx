@@ -52,7 +52,7 @@ const ProductoComponent = () => {
           renderItem={({ item }) => (
             <View style={styles.itemContainer}>
               <Text style={styles.boldText}>Nombre: {item.nombreOUCR}</Text>
-              <Text>Descripción: {item.descripcionOUCR}</Text>
+              <Text >Descripción: {item.descripcionOUCR}</Text>
               <Text>Precio: {item.precioOUCR}</Text>
             </View>
           )}
