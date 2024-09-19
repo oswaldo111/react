@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Configura la URL base de tu API
-const apiUrl = 'http://productosOUCR.somee.com'; // Cambia esto por tu URL real
+const apiUrl = 'https://productosOUCR.somee.com'; // Cambia esto por tu URL real
 
 const api = axios.create({
   baseURL: apiUrl,
@@ -52,7 +52,7 @@ export const crearProducto = async (producto) => {
   try {
     const response = await api.post('/product', {
       NombreOUCR: producto.nombre,
-      DescripcionoOUCR: producto.descripcion,
+      DescripcionOUCR: producto.descripcion,
       PrecioOUCR: producto.precio,
     });
     return response.data;
